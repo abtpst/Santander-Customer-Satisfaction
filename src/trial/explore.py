@@ -61,8 +61,7 @@ def gen_log_plots(in_df,target_col,save_dir,x_label):
     #find out which columns indicate a quantity of something. also find max value of this column
     for col in cols:
         in_df[col]=in_df[col].dropna()
-        in_df[col]=in_df[col].replace([0],float('-inf'))
-        in_df[col].map(np.log).hist(bins=1000)
+        in_df[col].replace(0, np.nan).dropna().map(np.log).hist(bins=1000)
         plt.xlabel(x_label+col)
         plt.ylabel('Number of customers in train')
         plt.savefig(save_dir+col+'.png')
