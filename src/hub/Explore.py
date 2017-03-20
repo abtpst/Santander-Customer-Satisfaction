@@ -12,13 +12,14 @@ if __name__ == '__main__':
     train = pd.read_csv("../../resources/data/train/train.csv") # the train dataset is now a Pandas DataFrame
     test = pd.read_csv("../../resources/data/test/test.csv") # the test dataset is now a Pandas DataFrame
     ''' 
-    Generate plots for calculating quantities for variables, where this makes sense. The Y-axis will be the number of customers,
-    and the X-axis will be the count/quantity of the variable we are plotting against. The plot will show two bars. Green represents 
-    that the value of TARGET is 1 and Blue represents that the value of TARGET is 0  
+    Generate plots for num_var variables. The Y-axis will be the number of customers, and the X-axis will be the count/quantity 
+    of the variable we are plotting against i.e. the num_var. The plot will show two bars. Green represents that the value of TARGET 
+    is 1 and Blue represents that the value of TARGET is 0  
     '''
-    PlotGenerator.gen_plots(train,'TARGET','^num_var[0-9]{1,2}$','../../resources/plots/num_vars/','Number of ')
+    PlotGenerator.gen_plots(train,'TARGET','^num_([a-z]+_)?var[0-9]{1,2}(_([a-z]+_)?([a-z]+)?[0-9])?$','../../resources/plots/num_vars/','Number of ')
     # Also generate the kernel density estimation plots for the above condition
-    PlotGenerator.gen_plots(train,'TARGET','^num_var[0-9]{1,2}$','../../resources/plots/num_vars/','Number of ',True)
+    PlotGenerator.gen_plots(train,'TARGET','^num_([a-z]+_)?var[0-9]{1,2}(_([a-z]+_)?([a-z]+)?[0-9])?$','../../resources/plots/num_vars/','Number of ',True)
+    
     ''' 
     Generate plots for the values of variables. The Y-axis will be the number of customers, and the X-axis will be the 
     value of the variable we are plotting against. The plot will show two bars. Green represents that the value of TARGET 
