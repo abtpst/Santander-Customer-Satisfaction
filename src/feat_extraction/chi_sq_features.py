@@ -8,7 +8,7 @@ from sklearn.feature_selection import f_classif,chi2
 from sklearn.preprocessing import Binarizer, scale
 import json
 
-def gen_chi_sq_feats(in_df,y):
+def gen_chi_sq_feats(in_df,y,save_path):
 
     # First select features based on chi2 and f_classif
     p = 3
@@ -28,4 +28,4 @@ def gen_chi_sq_feats(in_df,y):
     selected = chi2_selected & f_classif_selected
     print('Chi2 & F_classif selected {} features'.format(selected.sum()))
     features = [ f for f,s in zip(in_df.columns, selected) if s]
-    json.dump(features,open('../../resources/feats/chi2_feats.json','w'))
+    json.dump(features,open(save_path,'w'))
