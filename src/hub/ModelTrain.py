@@ -16,7 +16,6 @@ if __name__ == '__main__':
     test_id = test.ID
     test = test.drop(["ID"],axis=1)
     X_train, X_test, y_train, y_test = ReadIn.get_TT_split(train, test, 0.30)
-    
     model_names=[
                 "ExtraTreesClassifier",
                 "RandomForestClassifier",
@@ -29,6 +28,7 @@ if __name__ == '__main__':
                 AdaBoostClassifier(n_estimators=200)]
     
     for idx, clf in enumerate(clf_list):
+        
         
         selector = clf.fit(X_train, y_train)
         
@@ -43,23 +43,23 @@ if __name__ == '__main__':
         # clf.feature_importances_ 
         fs = SelectFromModel(selector, prefit=True)
         
-        X_train = fs.transform(X_train)
-        X_test = fs.transform(X_test)
-        test = fs.transform(test)
+        X_train_np = fs.transform(X_train)
+        X_test_np = fs.transform(X_test)
+        test_np = fs.transform(test)
                 
         ## # Train Model
         # classifier from xgboost
         m2_xgb = xgb.XGBClassifier(n_estimators=110, nthread=-1, max_depth = 4, \
         seed=1729)
-        m2_xgb.fit(X_train, y_train, eval_metric="auc", verbose = False,
-                   eval_set=[(X_test, y_test)])
+        m2_xgb.fit(X_train_np, y_train, eval_metric="auc", verbose = False,
+                   eval_set=[(X_test_np, y_test)])
         
         # calculate the auc score
-        print("Roc AUC: ", roc_auc_score(y_test, m2_xgb.predict_proba(X_test)[:,1],
+        print("Roc AUC: ", roc_auc_score(y_test, m2_xgb.predict_proba(X_test_np)[:,1],
                       average='macro'))
                       
         ## # Submission
-        probs = m2_xgb.predict_proba(test)
+        probs = m2_xgb.predict_proba(test_np)
         
         submission = pd.DataFrame({"ID":test_id, "TARGET": probs[:,1]})
         submission.to_csv(model_names[idx]+"-XGB.csv", index=False)
