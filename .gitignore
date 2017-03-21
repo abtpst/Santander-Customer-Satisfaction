@@ -90,6 +90,7 @@ ENV/
 
 # ignore resources folder
 resources/data/*
+resources/results/*
 # ignore pydev and eclipse related files
 .pydev*
 .project*
