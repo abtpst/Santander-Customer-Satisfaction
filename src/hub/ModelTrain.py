@@ -3,13 +3,14 @@ Created on Mar 20, 2017
 
 @author: abhijit.tomar
 '''
+import json
+import pandas as pd
+import xgboost as xgb
+import matplotlib.pyplot as plt
 from preproc import ReadIn
 from sklearn.metrics import roc_auc_score
 from sklearn.ensemble import RandomForestClassifier,ExtraTreesClassifier,AdaBoostClassifier,GradientBoostingClassifier
 from sklearn.feature_selection import SelectFromModel
-import pandas as pd
-import xgboost as xgb
-import matplotlib.pyplot as plt
 if __name__ == '__main__':
     
     train , test = ReadIn.get_cleaned()
@@ -34,13 +35,19 @@ if __name__ == '__main__':
         
         # plot most important features
         feat_imp = pd.Series(clf.feature_importances_, index = X_train.columns.values).sort_values(ascending=False)
+        
+        json.dump(list(feat_imp[:40].index),open("../../resources/feats/"+model_names[idx]+".json",'w'))
+        
         feat_imp[:40].plot(kind='bar', title='Feature Importances according to '+model_names[idx], figsize=(12, 8))
         plt.ylabel('Feature Importance Score')
         plt.subplots_adjust(bottom=0.3)
         plt.savefig('../../resources/plots/models/'+model_names[idx]+'.png')
-        plt.show()
+        #plt.show()
         
-        # clf.feature_importances_ 
+        '''
+        Meta-transformer for selecting features 
+        based on importance weights.
+        '''
         fs = SelectFromModel(selector, prefit=True)
         
         X_train_np = fs.transform(X_train)

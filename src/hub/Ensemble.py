@@ -88,4 +88,4 @@ if __name__ == '__main__':
 
     print ("Saving Results.")
     submission = pd.DataFrame({"ID":test.index, "TARGET":y_submission})
-    submission.to_csv('../../resources/results/submission_RF_GBT_ABC_XGB.csv', index=False)
+    submission.to_csv('../../resources/results/ensemble.csv', index=False)
