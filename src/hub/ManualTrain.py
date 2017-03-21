@@ -5,11 +5,9 @@ Created on Mar 20, 2017
 '''
 import pandas as pd
 import numpy as np
-from preproc import ReadIn
 from sklearn import cross_validation
 from constants import feat_list
-from sklearn.ensemble import RandomForestClassifier,ExtraTreesClassifier,AdaBoostClassifier,GradientBoostingClassifier
-from sklearn.tree import DecisionTreeClassifier,ExtraTreeClassifier
+from sklearn.ensemble import RandomForestClassifier,AdaBoostClassifier,GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
 import xgboost as xgb
 
@@ -21,7 +19,9 @@ if __name__ == '__main__':
     
     shuffle = False
 
-    train , test = ReadIn.get_cleaned()
+    train = pd.read_csv("../../resources/data/train/train.csv",index_col=0) # the train dataset is now a Pandas DataFrame
+    test = pd.read_csv("../../resources/data/test/test.csv",index_col=0) # the test dataset is now a Pandas DataFrame
+    
 
     # Replace -999999 in var3 column with most common value 2 
     training = train.replace(-999999,2)
@@ -88,4 +88,4 @@ if __name__ == '__main__':
 
     print ("Saving Results.")
     submission = pd.DataFrame({"ID":test.index, "TARGET":y_submission})
-    submission.to_csv("submission_RF_GBT_ABC_XGB.csv", index=False)
+    submission.to_csv('../../resources/results/submission_RF_GBT_ABC_XGB.csv', index=False)

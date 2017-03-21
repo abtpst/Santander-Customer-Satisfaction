@@ -62,4 +62,4 @@ if __name__ == '__main__':
         probs = m2_xgb.predict_proba(test_np)
         
         submission = pd.DataFrame({"ID":test_id, "TARGET": probs[:,1]})
-        submission.to_csv(model_names[idx]+"-XGB.csv", index=False)
+        submission.to_csv('../../resources/results/'+model_names[idx]+"-XGB.csv", index=False)
