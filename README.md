@@ -68,6 +68,7 @@ For each of these variables, we also generate a kernel density plot, which just 
 and the kernel density
 
 ![num_var4 density plot](resources/plots/num_vars/num_var4_density.png)
+
 3. `resources/plots/logs`: The other variables are hard to visualize using bar and kernel density plots as all of the values are between 0 and 1 in most cases. So, here we generate the log of the value and then plot it against the `TARGET`. Here we will see one plot for `TARGET`=0 and the other for `TARGET`=1
 ![saldo_medio_var8_ult1 log plot](resources/plots/logs/saldo_medio_var8_ult1.png)
 
