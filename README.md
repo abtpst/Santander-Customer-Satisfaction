@@ -82,3 +82,14 @@ For `TARGET 0`, we can clearly see a dense concentration between 11.5 and 13. In
 As we can see, the major peaks for `TARGET 0` and `TARGET 1` overlap so there is no clear indication where a new test data point with value such as `num_meses_var13_corto_ult3=0` would lie. This particular plot also highlights another interesting point. The major peaks indicate that most of the values for this variable are `0.0`. There are some minor peaks at `1.0`,`2.0` and `3.0` but their size relative to the size of the peak at 0.0 indicate that the number of data points outside of `0.0` are negligible. I have chosen to ignore such variables in favor of others where there is not much disparity between peak sizes as this indicates a more even distribution of values among the data points.
 ### 4. Predicting using Ensemble
 `hub.Ensemble.py` creates an ensemble of `RandomForestClassifier`,`AdaBoostClassifier`,`GradientBoostingClassifier` and `XGBClassifier`. The features selected for training are a combination of features generated in step 2. Some other features have also been added by examining the plots, as explained in the **Rationale** above. These features are stored at `constants.feat_list.py`
+
+The basic idea behind ensemble is this:
+
+- Generate predictions for a number of classifiers. So lets say we have classifiers clf1,clf2,clf3... and the corresponding predictions made by these classifiers are y1,y2,y3... respectively
+- The predictions from the training data is ytrain
+- Use a regressor. The regressor will have y1,y2,y3... as training data and ytrain as the prediction goal
+- Use the trained regressor to predict on the test data
+
+All of the above ideas are implemented in `hub.Ensemble.py`. We use `RandomForestClassifier`,`GradientBoostingClassifier`,`AdaBoostClassifier` and `XGBClassifier` as the base classifiers. Then we use `LogisticRegression` to combine the results of these classifiers.
+### 5. Predicting using different models
+Another way to predict is to use different combinations of models and classifiers. `hub.ModelTrain.py` explores this approach. We use each of`ExtraTreesClassifier`,`RandomForestClassifier`,`GradientBoostingClassifier`,`AdaBoostClassifier` to figure out a list of features using `clf.feature_importances_`. Then we use `sklearn.feature_selection`s `SelectFromModel` meta-transformer for selecting features based on importance weights. These features would then be used to train the `XGBClassifier`. Finally we predict on the test data.

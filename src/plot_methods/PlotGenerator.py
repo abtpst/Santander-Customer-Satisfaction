@@ -57,7 +57,6 @@ def gen_log_plots(in_df,target_col,save_dir,x_label):
         in_df[col]=in_df[col].dropna()
         try:
             in_df[col].replace(0, np.nan).dropna().map(np.log).hist(by=in_df['TARGET'],bins=1000,log=True)
-                #histtype : {'bar', 'barstacked', 'step',  'stepfilled'}, optional
             plt.xlabel(x_label+col)
             plt.ylabel('Number of customers in train')
             plt.savefig(save_dir+col+'.png')
